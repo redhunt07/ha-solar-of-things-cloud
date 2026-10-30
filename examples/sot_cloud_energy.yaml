@@ -1,0 +1,212 @@
+# Solar of Things Cloud — example Energy dashboard package.
+#
+# Optional. It builds estimated kWh counters from the read-only cloud sensors
+# and three utility meters per counter (day/month/year). Cloud samples arrive
+# roughly every 5 minutes, so these values are estimates, not a fiscal meter.
+# Battery power is V x A on the DC side, without inverter efficiency.
+#
+# Place this file in /config/packages/ (packages must be enabled in
+# configuration.yaml) and restart Home Assistant. Entity IDs match a default
+# installation; adjust them if you renamed entities.
+# Cloud ~5 min: estimated energy except vendor PV total. Battery power = V*A (DC).
+template:
+- sensor:
+  - name: SOT Rete Prelievo Potenza
+    unique_id: sot_energy_grid_w
+    unit_of_measurement: W
+    device_class: power
+    state_class: measurement
+    availability: '{{ is_number(states(''sensor.inverter_cloud_sola_lettura_grid_power''))
+      }}'
+    state: '{{ ([0, states(''sensor.inverter_cloud_sola_lettura_grid_power'') | float(0)]
+      | max * 1000) | round(2) }}'
+  - name: SOT Fotovoltaico Potenza
+    unique_id: sot_energy_pv_w
+    unit_of_measurement: W
+    device_class: power
+    state_class: measurement
+    availability: '{{ is_number(states(''sensor.inverter_cloud_sola_lettura_pv_power''))
+      }}'
+    state: '{{ ([0, states(''sensor.inverter_cloud_sola_lettura_pv_power'') | float(0)]
+      | max * 1000) | round(2) }}'
+  - name: SOT Carichi Potenza
+    unique_id: sot_energy_load_w
+    unit_of_measurement: W
+    device_class: power
+    state_class: measurement
+    availability: '{{ is_number(states(''sensor.inverter_cloud_sola_lettura_load_power''))
+      }}'
+    state: '{{ ([0, states(''sensor.inverter_cloud_sola_lettura_load_power'') | float(0)]
+      | max * 1000) | round(2) }}'
+  - name: SOT Batteria Carica Potenza
+    unique_id: sot_energy_battery_carica_w
+    unit_of_measurement: W
+    device_class: power
+    state_class: measurement
+    availability: '{{ is_number(states(''sensor.inverter_cloud_sola_lettura_battery_charging_current''))
+      and is_number(states(''sensor.inverter_cloud_sola_lettura_battery_voltage''))
+      }}'
+    state: '{{ ([0, states(''sensor.inverter_cloud_sola_lettura_battery_charging_current'')
+      | float(0)] | max * states(''sensor.inverter_cloud_sola_lettura_battery_voltage'')
+      | float(0)) | round(2) }}'
+  - name: SOT Batteria Scarica Potenza
+    unique_id: sot_energy_battery_scarica_w
+    unit_of_measurement: W
+    device_class: power
+    state_class: measurement
+    availability: '{{ is_number(states(''sensor.inverter_cloud_sola_lettura_battery_discharge_current''))
+      and is_number(states(''sensor.inverter_cloud_sola_lettura_battery_voltage''))
+      }}'
+    state: '{{ ([0, states(''sensor.inverter_cloud_sola_lettura_battery_discharge_current'')
+      | float(0)] | max * states(''sensor.inverter_cloud_sola_lettura_battery_voltage'')
+      | float(0)) | round(2) }}'
+  - name: SOT Batteria Potenza Netta
+    unique_id: sot_energy_battery_net_w
+    unit_of_measurement: W
+    device_class: power
+    state_class: measurement
+    availability: '{{ is_number(states(''sensor.sot_batteria_scarica_potenza'')) and
+      is_number(states(''sensor.sot_batteria_carica_potenza'')) }}'
+    state: '{{ (states(''sensor.sot_batteria_scarica_potenza'') | float(0) - states(''sensor.sot_batteria_carica_potenza'')
+      | float(0)) | round(2) }}'
+  - name: SOT Fotovoltaico Energia Totale
+    unique_id: sot_energy_pv_total
+    unit_of_measurement: kWh
+    device_class: energy
+    state_class: total
+    availability: '{{ is_number(states(''sensor.inverter_cloud_sola_lettura_pv_energy_total''))
+      }}'
+    state: '{{ states(''sensor.inverter_cloud_sola_lettura_pv_energy_total'') | float(0)
+      }}'
+sensor:
+- platform: integration
+  source: sensor.sot_rete_prelievo_potenza
+  name: SOT Rete Prelevata Energia
+  unique_id: sot_integral_rete_prelievo_kwh
+  unit_prefix: k
+  unit_time: h
+  method: left
+  round: 4
+  max_sub_interval:
+    minutes: 1
+- platform: integration
+  source: sensor.sot_carichi_potenza
+  name: SOT Carichi Energia
+  unique_id: sot_integral_carichi_kwh
+  unit_prefix: k
+  unit_time: h
+  method: left
+  round: 4
+  max_sub_interval:
+    minutes: 1
+- platform: integration
+  source: sensor.sot_batteria_carica_potenza
+  name: SOT Batteria Caricata Energia
+  unique_id: sot_integral_batteria_carica_kwh
+  unit_prefix: k
+  unit_time: h
+  method: left
+  round: 4
+  max_sub_interval:
+    minutes: 1
+- platform: integration
+  source: sensor.sot_batteria_scarica_potenza
+  name: SOT Batteria Scaricata Energia
+  unique_id: sot_integral_batteria_scarica_kwh
+  unit_prefix: k
+  unit_time: h
+  method: left
+  round: 4
+  max_sub_interval:
+    minutes: 1
+utility_meter:
+  sot_rete_prelevata_energia_oggi:
+    source: sensor.sot_rete_prelevata_energia
+    name: SOT Rete Prelevata Energia oggi
+    cycle: daily
+    periodically_resetting: false
+    always_available: false
+  sot_rete_prelevata_energia_mese:
+    source: sensor.sot_rete_prelevata_energia
+    name: SOT Rete Prelevata Energia mese
+    cycle: monthly
+    periodically_resetting: false
+    always_available: false
+  sot_rete_prelevata_energia_anno:
+    source: sensor.sot_rete_prelevata_energia
+    name: SOT Rete Prelevata Energia anno
+    cycle: yearly
+    periodically_resetting: false
+    always_available: false
+  sot_carichi_energia_oggi:
+    source: sensor.sot_carichi_energia
+    name: SOT Carichi Energia oggi
+    cycle: daily
+    periodically_resetting: false
+    always_available: false
+  sot_carichi_energia_mese:
+    source: sensor.sot_carichi_energia
+    name: SOT Carichi Energia mese
+    cycle: monthly
+    periodically_resetting: false
+    always_available: false
+  sot_carichi_energia_anno:
+    source: sensor.sot_carichi_energia
+    name: SOT Carichi Energia anno
+    cycle: yearly
+    periodically_resetting: false
+    always_available: false
+  sot_batteria_caricata_energia_oggi:
+    source: sensor.sot_batteria_caricata_energia
+    name: SOT Batteria Caricata Energia oggi
+    cycle: daily
+    periodically_resetting: false
+    always_available: false
+  sot_batteria_caricata_energia_mese:
+    source: sensor.sot_batteria_caricata_energia
+    name: SOT Batteria Caricata Energia mese
+    cycle: monthly
+    periodically_resetting: false
+    always_available: false
+  sot_batteria_caricata_energia_anno:
+    source: sensor.sot_batteria_caricata_energia
+    name: SOT Batteria Caricata Energia anno
+    cycle: yearly
+    periodically_resetting: false
+    always_available: false
+  sot_batteria_scaricata_energia_oggi:
+    source: sensor.sot_batteria_scaricata_energia
+    name: SOT Batteria Scaricata Energia oggi
+    cycle: daily
+    periodically_resetting: false
+    always_available: false
+  sot_batteria_scaricata_energia_mese:
+    source: sensor.sot_batteria_scaricata_energia
+    name: SOT Batteria Scaricata Energia mese
+    cycle: monthly
+    periodically_resetting: false
+    always_available: false
+  sot_batteria_scaricata_energia_anno:
+    source: sensor.sot_batteria_scaricata_energia
+    name: SOT Batteria Scaricata Energia anno
+    cycle: yearly
+    periodically_resetting: false
+    always_available: false
+  sot_fotovoltaico_energia_oggi:
+    source: sensor.sot_fotovoltaico_energia_totale
+    name: SOT Fotovoltaico Energia oggi
+    cycle: daily
+    periodically_resetting: false
+    always_available: false
+  sot_fotovoltaico_energia_mese:
+    source: sensor.sot_fotovoltaico_energia_totale
+    name: SOT Fotovoltaico Energia mese
+    cycle: monthly
+    periodically_resetting: false
+    always_available: false
+  sot_fotovoltaico_energia_anno:
+    source: sensor.sot_fotovoltaico_energia_totale
+    name: SOT Fotovoltaico Energia anno
+    cycle: yearly
+    periodically_resetting: false
+    always_available: false

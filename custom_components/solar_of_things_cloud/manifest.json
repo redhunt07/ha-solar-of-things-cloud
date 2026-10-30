@@ -1,0 +1,14 @@
+{
+  "domain": "solar_of_things_cloud",
+  "name": "Solar of Things Cloud",
+  "codeowners": [
+    "@redhunt07"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/redhunt07/ha-solar-of-things-cloud#readme",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/redhunt07/ha-solar-of-things-cloud/issues",
+  "requirements": [],
+  "version": "1.0.0"
+}

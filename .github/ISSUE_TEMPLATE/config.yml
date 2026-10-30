@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/redhunt07/ha-solar-of-things-cloud#readme
+    about: Installation, configuration, entities and troubleshooting.
+  - name: Home Assistant community
+    url: https://community.home-assistant.io/
+    about: General Home Assistant questions.
+  - name: Security issue
+    url: https://github.com/redhunt07/ha-solar-of-things-cloud/security/advisories/new
+    about: Please report vulnerabilities privately.

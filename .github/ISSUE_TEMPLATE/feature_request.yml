@@ -1,0 +1,28 @@
+name: Feature request
+description: Suggest a small, useful improvement.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This integration is intentionally read-only. Please describe the use case first, so we can discuss the smallest useful change.
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use case
+      description: What are you trying to do, and why is it useful?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: How would you like it to work? Mention alternatives you considered.
+    validations:
+      required: false
+  - type: input
+    id: inverter
+    attributes:
+      label: Inverter model (if relevant)
+    validations:
+      required: false

@@ -1,0 +1,6 @@
+{
+  "name": "Solar of Things Cloud",
+  "homeassistant": "2026.10.0",
+  "content_in_root": false,
+  "zip_release": false
+}

@@ -1,0 +1,38 @@
+[project]
+name = "ha-solar-of-things-cloud"
+version = "1.0.0"
+description = "Read-only Home Assistant integration for Solar of Things inverter cloud telemetry."
+readme = "README.md"
+requires-python = ">=3.13"
+license = { text = "MIT" }
+authors = [{ name = "RedHunt07" }]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Home Automation",
+]
+
+[project.urls]
+Homepage = "https://github.com/redhunt07/ha-solar-of-things-cloud"
+Issues = "https://github.com/redhunt07/ha-solar-of-things-cloud/issues"
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+extend-exclude = ["tests/fixtures"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]
+ignore = [
+  "RUF001", # ambiguous unicode in strings (Italian accents)
+  "RUF002",
+  "RUF003",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E402"] # imports follow the offline package bootstrap
+
+[tool.ruff.format]
+quote-style = "double"

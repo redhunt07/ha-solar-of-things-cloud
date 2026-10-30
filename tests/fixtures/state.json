@@ -1,0 +1,99 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "time": "2026-10-22T22:48:22Z",
+    "fields": {
+      "batteryVoltage": {
+        "unit": "V",
+        "value": 26.4,
+        "isHidden": null
+      },
+      "batteryCapacity": {
+        "unit": "%",
+        "value": 85,
+        "isHidden": null
+      },
+      "batteryChargingCurrent": {
+        "unit": "A",
+        "value": 10,
+        "isHidden": null
+      },
+      "batteryDischargeCurrent": {
+        "unit": "A",
+        "value": 0,
+        "isHidden": null
+      },
+      "acInputVoltage": {
+        "unit": "V",
+        "value": 228.8,
+        "isHidden": null
+      },
+      "mainsFrequency": {
+        "unit": "Hz",
+        "value": 50,
+        "isHidden": null
+      },
+      "mainsPower": {
+        "unit": "kW",
+        "value": 0.834,
+        "isHidden": null
+      },
+      "outputVoltage": {
+        "unit": "V",
+        "value": 228.6,
+        "isHidden": null
+      },
+      "outputFrequency": {
+        "unit": "Hz",
+        "value": 50,
+        "isHidden": null
+      },
+      "outputActivePower": {
+        "unit": "kW",
+        "value": 0.509,
+        "isHidden": null
+      },
+      "outputLoadPercent": {
+        "unit": "%",
+        "value": 15,
+        "isHidden": null
+      },
+      "generationPower": {
+        "unit": "kW",
+        "value": 0.0,
+        "isHidden": null
+      },
+      "pvVoltage": {
+        "unit": "V",
+        "value": 0,
+        "isHidden": null
+      },
+      "pvCurrent": {
+        "unit": "A",
+        "value": 0,
+        "isHidden": null
+      },
+      "pvPower": {
+        "unit": "kW",
+        "value": 0,
+        "isHidden": null
+      },
+      "pvGeneratedEnergyOfDay": {
+        "unit": "kWh",
+        "value": 0,
+        "isHidden": null
+      },
+      "pvGeneratedEnergyOfTotal": {
+        "unit": "kWh",
+        "value": 1282.3,
+        "isHidden": null
+      },
+      "inverterTemperature": {
+        "unit": "°C",
+        "value": 31,
+        "isHidden": null
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="Solar cloud telemetry">
+<g fill="none" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="88" cy="78" r="30" fill="#fbbf24" stroke="#f59e0b" stroke-width="7"/>
+<path d="M88 26v-9m0 122v-9m-52-52h-9m122 0h-9M51 41l-7-7m88 88-7-7M51 115l-7 7m88-88-7 7" stroke="#f59e0b" stroke-width="7"/>
+<path d="M124 129h70c20 0 31-12 31-27 0-16-13-29-30-29-4-22-20-35-39-35-25 0-43 20-42 43-15 0-27 11-27 25 0 13 11 23 27 23z" fill="#e0f2fe" stroke="#0891b2" stroke-width="8"/>
+<path d="M58 151h129l22 65H36z" fill="#0c4a6e" stroke="#0e7490" stroke-width="8"/>
+<path d="M101 151l-7 65m50-65 9 65m-111-32h157M121 218v21m-30 0h62" stroke="#67e8f9" stroke-width="6"/>
+</g>
+</svg>

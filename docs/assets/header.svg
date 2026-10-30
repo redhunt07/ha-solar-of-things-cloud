@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-labelledby="title desc">
+<title id="title">Solar of Things Cloud</title><desc id="desc">Read-only inverter telemetry for Home Assistant. Battery, solar, grid and load measurements.</desc>
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#0c1929"/><stop offset="1" stop-color="#0c2d37"/></linearGradient></defs>
+<rect x="1" y="1" width="1198" height="298" rx="20" fill="url(#bg)" stroke="#285265"/>
+<rect x="42" y="49" width="4" height="199" rx="2" fill="#38bdf8"/>
+<g font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif">
+<text x="68" y="68" fill="#7dd3fc" font-size="13" letter-spacing="2.8" font-weight="600">HOME ASSISTANT · COMMUNITY INTEGRATION</text>
+<text x="65" y="138" fill="#f8fafc" font-size="54" font-weight="700" letter-spacing="-1.5">Solar of Things Cloud</text>
+<text x="68" y="185" fill="#cbd5e1" font-size="25">Your inverter data. Inside Home Assistant.</text>
+<text x="68" y="236" fill="#86cbd8" font-size="15" letter-spacing="1">READ-ONLY TELEMETRY / SESSION RENEWAL / ENERGY HELPERS</text>
+</g>
+<g transform="translate(938 41) scale(.83)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="88" cy="78" r="30" fill="#fbbf24" stroke="#f59e0b" stroke-width="7"/>
+<path d="M88 26v-9m-52 61h-9m122 0h-9M51 41l-7-7M51 115l-7 7m88-88-7 7" stroke="#f59e0b" stroke-width="7"/>
+<path d="M124 129h70c20 0 31-12 31-27 0-16-13-29-30-29-4-22-20-35-39-35-25 0-43 20-42 43-15 0-27 11-27 25 0 13 11 23 27 23z" fill="#e0f2fe" stroke="#0891b2" stroke-width="8"/>
+<path d="M58 151h129l22 65H36z" fill="#0c4a6e" stroke="#38bdf8" stroke-width="7"/>
+<path d="M101 151l-7 65m50-65 9 65m-111-32h157M121 218v21m-30 0h62" stroke="#67e8f9" stroke-width="5"/>
+</g></svg>

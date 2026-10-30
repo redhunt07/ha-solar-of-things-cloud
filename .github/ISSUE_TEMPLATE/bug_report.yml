@@ -1,0 +1,73 @@
+name: Bug report
+description: Report a reproducible problem with the integration.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Please remove tokens and private data from logs before posting.
+  - type: input
+    id: ha_version
+    attributes:
+      label: Home Assistant version
+      placeholder: "2026.10.4"
+    validations:
+      required: true
+  - type: input
+    id: integration_version
+    attributes:
+      label: Integration version
+      description: From HACS or custom_components/solar_of_things_cloud/manifest.json
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: install_method
+    attributes:
+      label: Installation method
+      options:
+        - HACS
+        - Manual copy
+    validations:
+      required: true
+  - type: input
+    id: inverter
+    attributes:
+      label: Inverter model and firmware
+      placeholder: "e.g. 24V hybrid inverter, firmware 1.2.3"
+    validations:
+      required: false
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened
+      description: Describe the problem, including the exact error message shown in Home Assistant.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to Settings → Devices & services → Solar of Things Cloud
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output (tokens removed)
+      description: Enable debug logging for custom_components.solar_of_things_cloud first.
+      render: text
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I removed tokens and private data from the log excerpt.
+          required: true
+        - label: I searched existing issues for the same problem.
+          required: true

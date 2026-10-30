@@ -1,0 +1,31 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Solar of Things Cloud",
+        "description": "Telemetria cloud in sola lettura. Inserisci l'ID del dispositivo e un token di sessione della tua app Solar of Things. Nessuna impostazione viene scritta sull'inverter.",
+        "data": {
+          "device_id": "ID dispositivo",
+          "token": "Token di accesso (IOT-Token)",
+          "refresh_token": "Refresh token (consigliato, abilita il rinnovo automatico)"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Rinnova la sessione cloud",
+        "description": "La sessione precedente non può più essere rinnovata. Incolla un nuovo token di accesso e il refresh token corrispondente dalla tua app.",
+        "data": {
+          "token": "Token di accesso",
+          "refresh_token": "Refresh token"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Sessione scaduta, revocata o non valida.",
+      "cannot_connect": "Impossibile ottenere telemetria aggiornata. Controlla ID dispositivo, sessione e connettività cloud."
+    },
+    "abort": {
+      "already_configured": "Questo dispositivo è già configurato.",
+      "reauth_successful": "Sessione cloud rinnovata."
+    }
+  }
+}

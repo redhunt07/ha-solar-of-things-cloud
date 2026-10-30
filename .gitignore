@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+
+# Home Assistant runtime artifacts (never commit secrets)
+.storage/
+home-assistant.log*
+home-assistant_v2.db*
+*.db-journal
+
+# Editors and OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local tooling
+*.log
+
+# Generated release packages and local credentials
+dist/
+*.zip
+.env
+.env.*
