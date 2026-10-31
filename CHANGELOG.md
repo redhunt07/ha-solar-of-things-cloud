@@ -4,6 +4,14 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] — 2026-10-31
+
+### Changed
+
+- Added the `energy.solar_batteries` integration category for catalog discovery,
+  resolving the category warning raised during HACS submission validation.
+- No changes to telemetry, authentication or polling behavior.
+
 ## [1.0.0] — 2026-10-30
 
 First public release, extracted from a live, verified installation.
@@ -45,3 +53,5 @@ First public release, extracted from a live, verified installation.
 - The integration is read-only and never changes inverter settings.
 
 [1.0.0]: https://github.com/redhunt07/ha-solar-of-things-cloud/releases/tag/v1.0.0
+
+[1.0.1]: https://github.com/redhunt07/ha-solar-of-things-cloud/releases/tag/v1.0.1

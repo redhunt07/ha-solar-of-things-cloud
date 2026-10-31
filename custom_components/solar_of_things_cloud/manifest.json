@@ -1,6 +1,9 @@
 {
   "domain": "solar_of_things_cloud",
   "name": "Solar of Things Cloud",
+  "categories": [
+    "energy.solar_batteries"
+  ],
   "codeowners": [
     "@redhunt07"
   ],
@@ -10,5 +13,5 @@
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/redhunt07/ha-solar-of-things-cloud/issues",
   "requirements": [],
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
