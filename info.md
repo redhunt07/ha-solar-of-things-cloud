@@ -17,7 +17,7 @@ Read-only cloud telemetry for Solar of Things (Siseli) inverters: battery, grid,
 3. Install **Solar of Things Cloud** and restart Home Assistant.
 4. Settings → Devices & services → Add integration → **Solar of Things Cloud**.
 
-Then provide the numeric device ID and a session token from your own app. A refresh token enables automatic renewal. If the official Solar of Things integration is installed, the form prefills its credentials and revalidates them before saving.
+Then provide the numeric device ID and a session token from your own app. A refresh token enables automatic renewal. The form only uses the values you enter and never reads credentials from another integration.
 
 Requires Home Assistant 2026.10 or newer. No extra Python packages.
 

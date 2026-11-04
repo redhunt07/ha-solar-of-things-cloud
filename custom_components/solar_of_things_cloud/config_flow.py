@@ -12,7 +12,6 @@ import voluptuous as vol
 from aiohttp import ClientError
 from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import selector
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
@@ -38,39 +37,6 @@ REAUTH_SCHEMA = vol.Schema(
         vol.Required("refresh_token"): SECRET,
     }
 )
-
-
-def vendor_credentials(hass: HomeAssistant) -> dict[str, str] | None:
-    """Best-effort prefill from the official vendor integration, if present.
-
-    Only a single unambiguous entry is used, and the token is revalidated
-    before it is stored, so a stale vendor session cannot be imported blindly.
-    """
-    entries = hass.config_entries.async_entries("solar_of_things")
-    registry = dr.async_get(hass)
-    candidates: list[dict[str, str]] = []
-
-    for entry in entries:
-        token = entry.data.get("iot_token")
-        if not token:
-            continue
-        device_id = entry.data.get("device_id")
-        if not device_id:
-            identifiers = {
-                str(identifier[2])
-                for device in registry.devices.values()
-                if entry.entry_id in device.config_entries
-                for identifier in device.identifiers
-                if len(identifier) == 3
-                and identifier[0] == "solar_of_things"
-                and str(identifier[2]).isdigit()
-            }
-            if len(identifiers) != 1:
-                continue
-            device_id = identifiers.pop()
-        candidates.append({"device_id": str(device_id), "token": token})
-
-    return candidates[0] if len(candidates) == 1 else None
 
 
 async def _validate(hass: HomeAssistant, data: dict[str, Any]) -> dict[str, Any]:
@@ -115,12 +81,9 @@ class SolarConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 self._abort_if_unique_id_configured()
                 return self.async_create_entry(title="Solar of Things", data=validated)
 
-        schema = USER_SCHEMA
-        if user_input is None:
-            suggested = vendor_credentials(self.hass)
-            if suggested:
-                schema = self.add_suggested_values_to_schema(schema, suggested)
-        return self.async_show_form(step_id="user", data_schema=schema, errors=errors)
+        return self.async_show_form(
+            step_id="user", data_schema=USER_SCHEMA, errors=errors
+        )
 
     async def async_step_reauth(
         self, entry_data: dict[str, Any]

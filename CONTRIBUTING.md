@@ -55,7 +55,7 @@ Run **Developer tools → Check configuration** before restarting.
 | :--- | :--- |
 | `api.py` | Read-only client and telemetry parser |
 | `auth.py` | Signed session renewal and credential rotation |
-| `config_flow.py` | Setup, prefill and reauthentication |
+| `config_flow.py` | Setup and reauthentication |
 | `sensor.py` | Read-only entities |
 | `const.py` | Endpoints, constants and sensor descriptions |
 | `diagnostics.py` | Redacted diagnostics |

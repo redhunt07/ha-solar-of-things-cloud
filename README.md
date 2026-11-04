@@ -83,16 +83,13 @@ The setup form asks for:
 | **Access token** | Yes | Existing `IOT-Token` from your authenticated session |
 | **Refresh token** | Recommended | Enables automatic renewal; without it the session expires after a few hours and needs reauthentication |
 
-If the official **Solar of Things** integration is installed, the form prefills the device ID and access token from its config entry when exactly one unambiguous entry exists. Values are always revalidated against the cloud before being stored.
+The form only asks for the values you enter; it never reads credentials stored by another integration.
 
 Your account password is never requested and never stored.
 
 ## Obtaining the device ID and tokens
 
-The vendor app does not display tokens in its UI. Two practical options:
-
-1. **From the official integration (easiest).** If `solar_of_things` is configured in Home Assistant, this integration reads its stored `iot_token` and resolves the numeric device ID from the device registry. Accept the prefilled values, or paste fresh ones if the old session is already expired.
-2. **From your own app session.** The app keeps the access token, refresh token and expiry in its local session store. Copy the access token and refresh token from there. Tokens are credentials: do not paste them into issues or screenshots.
+The vendor app does not display tokens in its UI. Copy them from your own app session: the app keeps the access token, refresh token and expiry in its local session store. Tokens are credentials: do not paste them into issues or screenshots.
 
 The device ID is the numeric identifier of your inverter, not the serial number printed on the label. It is the same value the vendor app uses for `deviceId` requests.
 
@@ -159,7 +156,7 @@ Important: these are **estimates**. Cloud samples arrive roughly every 5 minutes
 
 | Symptom | Meaning | Action |
 | :--- | :--- | :--- |
-| `invalid_auth` during setup | Session expired, revoked or wrong token | Get a fresh token pair from the app or the official integration and retry |
+| `invalid_auth` during setup | Session expired, revoked or wrong token | Get a fresh token pair from the app and retry |
 | `cannot_connect` | Cloud unreachable, device ID wrong, or sample stale | Check connectivity, device ID and that the inverter is online in the app |
 | Entities become unavailable | Session expired and no refresh token, or cloud outage | Use the reauth flow; check the vendor app |
 | Reauth keeps failing | Refresh token revoked or rotated elsewhere | Sign in again in the app and copy a new pair |

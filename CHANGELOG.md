@@ -4,6 +4,15 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] — 2026-11-04
+
+### Changed
+
+- The setup form no longer reads credentials from the official Solar of Things
+  integration: it only asks for the values the user enters. Removed the
+  `vendor_credentials()` helper and the suggested-value prefill.
+- README, Italian README and `info.md` updated to match.
+
 ## [1.0.1] — 2026-10-31
 
 ### Changed

@@ -67,16 +67,13 @@ Campi richiesti:
 | **Token di accesso** | Sì | `IOT-Token` della sessione autenticata |
 | **Refresh token** | Consigliato | Abilita il rinnovo automatico; senza, la sessione scade in poche ore e serve riauntenticare |
 
-Se è installata l'integrazione ufficiale **Solar of Things**, il modulo precompila ID e token dalla sua config entry quando esiste una sola voce non ambigua. I valori vengono comunque rivalidati sul cloud prima di essere salvati.
+Il modulo chiede solo i valori che inserisci: non legge mai le credenziali salvate da un'altra integrazione.
 
 La password dell'account non viene mai richiesta né salvata.
 
 ## Ottenere ID e token
 
-L'app non mostra i token nell'interfaccia. Due strade pratiche:
-
-1. **Dall'integrazione ufficiale (più semplice).** Se `solar_of_things` è configurata in Home Assistant, questa integrazione legge il suo `iot_token` e ricava l'ID numerico dal registro dispositivi. Accetta i valori precompilati oppure incolla quelli nuovi se la vecchia sessione è già scaduta.
-2. **Dalla tua sessione nell'app.** L'app conserva token di accesso, refresh token e scadenza nel proprio archivio locale. Copia access token e refresh token. Sono credenziali: non incollarli nelle issue o negli screenshot.
+L'app non mostra i token nell'interfaccia. Copiali dalla tua sessione nell'app: conserva token di accesso, refresh token e scadenza nel proprio archivio locale. Sono credenziali: non incollarli nelle issue o negli screenshot.
 
 L'ID dispositivo è l'identificativo numerico dell'inverter, non il seriale stampato sull'etichetta: è lo stesso valore che l'app usa come `deviceId`.
 
