@@ -4,6 +4,33 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] — 2026-11-09
+
+### Added
+
+- Account login: the setup flow can now sign in with the app account and
+  password, obtaining the session automatically. The password is hashed
+  locally with MD5 (the digest the vendor endpoint expects) and only the
+  digest is stored; the clear-text password is never persisted, logged or sent.
+- Automatic recovery when the refresh token expires or is revoked: if an
+  account/password digest is stored, the integration logs in again and saves
+  the new credential pair instead of asking for a new token.
+- Dedicated reauthentication step for the account method.
+
+### Changed
+
+- The setup flow now offers a choice between the account login and an existing
+  session token. The token method is unchanged.
+- HACS installation instructions now lead with a plain HACS search, as the
+  integration is in the default store. The "custom repository" wording was
+  removed.
+- README, Italian README and `info.md` updated accordingly.
+
+### Unchanged
+
+- Read-only telemetry, sensor names, entity IDs, polling interval and the
+  Energy dashboard example package.
+
 ## [1.0.2] — 2026-11-04
 
 ### Changed

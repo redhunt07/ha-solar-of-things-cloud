@@ -27,6 +27,9 @@ for a fix before disclosing publicly.
 
 - The access token, refresh token and their expiries are stored in the Home
   Assistant config entry (`/config/.storage`), never in the repository.
+- With the account login method, the password is hashed locally with MD5 and
+  only the digest is stored. The clear-text password is never persisted,
+  logged or sent; the login request carries the digest.
 - Tokens are never logged and never included in diagnostics.
 - Only the fixed vendor origin `https://solar.siseli.com` is contacted;
   redirects are not followed.

@@ -3,11 +3,35 @@
     "step": {
       "user": {
         "title": "Solar of Things Cloud",
-        "description": "Read-only cloud telemetry. Enter the device ID and a session token from your own Solar of Things app. Nothing is written back to the inverter.",
+        "menu_options": {
+          "account": "Sign in with the app account",
+          "token": "Use an existing session token"
+        }
+      },
+      "account": {
+        "title": "Sign in with the app account",
+        "description": "Read-only cloud telemetry. The password is hashed locally and only the digest is stored. It is used to recover the session automatically when the refresh token expires.",
+        "data": {
+          "device_id": "Device ID",
+          "account": "Account",
+          "password": "Password"
+        }
+      },
+      "token": {
+        "title": "Use an existing session token",
+        "description": "Paste an access token and, if available, its matching refresh token from your own Solar of Things app. Nothing is written back to the inverter.",
         "data": {
           "device_id": "Device ID",
           "token": "Access token (IOT-Token)",
-          "refresh_token": "Refresh token (recommended, enables automatic renewal)"
+          "refresh_token": "Refresh token (optional, enables automatic renewal)"
+        }
+      },
+      "reauth_account": {
+        "title": "Sign in again",
+        "description": "The stored session could not be renewed. Enter the account password to obtain a new session.",
+        "data": {
+          "account": "Account",
+          "password": "Password"
         }
       },
       "reauth_confirm": {
@@ -20,8 +44,8 @@
       }
     },
     "error": {
-      "invalid_auth": "Session expired, revoked or invalid.",
-      "cannot_connect": "Cannot retrieve fresh telemetry. Check the device ID, session and cloud connectivity."
+      "invalid_auth": "Account, password or session rejected.",
+      "cannot_connect": "Cannot retrieve fresh telemetry. Check the device ID, credentials and cloud connectivity."
     },
     "abort": {
       "already_configured": "This device is already configured.",

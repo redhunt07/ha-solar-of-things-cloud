@@ -2,22 +2,22 @@
 
 # Solar of Things Cloud for Home Assistant
 
-Read-only cloud telemetry for Solar of Things (Siseli) inverters: battery, grid, PV, load and inverter temperature, with automatic session renewal when a refresh token is available.
+Read-only cloud telemetry for Solar of Things (Siseli) inverters: battery, grid, PV, load and inverter temperature. Sign in with the app account and the session is recovered automatically when it expires.
 
 - **18 read-only sensors**, units preserved.
-- **Session renewal** before expiry, one bounded retry, rotated tokens persisted.
-- **Reauthentication flow** when the refresh token is revoked.
+- **Automatic session recovery** before expiry, with one bounded retry and rotated tokens persisted.
+- **Account login** (password hashed locally, only the digest stored) or an existing session token.
+- **Reauthentication flow** if the password changes or the session is revoked.
 - **Data quality guards**: stale samples, wrong units and non-numeric values are rejected, never shown as zeros.
 - **No writes** to the inverter.
 
 ## Installation
 
-1. HACS → Integrations → three-dot menu → **Custom repositories**.
-2. Add `https://github.com/redhunt07/ha-solar-of-things-cloud` as **Integration**.
-3. Install **Solar of Things Cloud** and restart Home Assistant.
-4. Settings → Devices & services → Add integration → **Solar of Things Cloud**.
+1. HACS → Integrations → search **Solar of Things Cloud**.
+2. Install it and restart Home Assistant.
+3. Settings → Devices & services → Add integration → **Solar of Things Cloud**.
 
-Then provide the numeric device ID and a session token from your own app. A refresh token enables automatic renewal. The form only uses the values you enter and never reads credentials from another integration.
+Choose the account login and enter the numeric device ID, account and password: the integration obtains and renews the session itself. Alternatively, paste an existing access/refresh token pair. Credentials of other integrations are never read.
 
 Requires Home Assistant 2026.10 or newer. No extra Python packages.
 

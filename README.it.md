@@ -1,6 +1,6 @@
 # Solar of Things Cloud — integrazione Home Assistant
 
-[![CI](https://github.com/redhunt07/ha-solar-of-things-cloud/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/redhunt07/ha-solar-of-things-cloud/actions/workflows/ci.yml) [![HACS validation](https://github.com/redhunt07/ha-solar-of-things-cloud/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/redhunt07/ha-solar-of-things-cloud/actions/workflows/validate.yml) [![HACS Custom](https://img.shields.io/badge/HACS-Custom-0f172a?logo=homeassistant&logoColor=41BDF5)](https://my.home-assistant.io/redirect/hacs_repository/?owner=redhunt07&repository=ha-solar-of-things-cloud&category=integration) [![Latest release](https://img.shields.io/github/v/release/redhunt07/ha-solar-of-things-cloud)](https://github.com/redhunt07/ha-solar-of-things-cloud/releases/latest) [![Home Assistant](https://img.shields.io/badge/Home_Assistant-2026.10%2B-0f172a?logo=homeassistant&logoColor=41BDF5)](https://www.home-assistant.io/) [![License: MIT](https://img.shields.io/github/license/redhunt07/ha-solar-of-things-cloud)](LICENSE)
+[![CI](https://github.com/redhunt07/ha-solar-of-things-cloud/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/redhunt07/ha-solar-of-things-cloud/actions/workflows/ci.yml) [![HACS validation](https://github.com/redhunt07/ha-solar-of-things-cloud/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/redhunt07/ha-solar-of-things-cloud/actions/workflows/validate.yml) [![HACS](https://img.shields.io/badge/HACS-0f172a?logo=homeassistant&logoColor=41BDF5)](https://my.home-assistant.io/redirect/hacs_repository/?owner=redhunt07&repository=ha-solar-of-things-cloud&category=integration) [![Latest release](https://img.shields.io/github/v/release/redhunt07/ha-solar-of-things-cloud)](https://github.com/redhunt07/ha-solar-of-things-cloud/releases/latest) [![Home Assistant](https://img.shields.io/badge/Home_Assistant-2026.10%2B-0f172a?logo=homeassistant&logoColor=41BDF5)](https://www.home-assistant.io/) [![License: MIT](https://img.shields.io/github/license/redhunt07/ha-solar-of-things-cloud)](LICENSE)
 
 Maintainer: **[RedHunt07](https://github.com/redhunt07)** · [English](README.md) · [Italiano](README.it.md)
 
@@ -13,7 +13,7 @@ Integrazione **in sola lettura** per la telemetria cloud degli inverter **Solar 
 
 Nessun dato viene scritto sull'inverter: nessuna impostazione, modalità o aggiornamento firmware.
 
-> **Perimetro.** L'integrazione usa il cloud del fornitore (`solar.siseli.com`). Non è un'integrazione BLE/Modbus locale e non sostituisce quella ufficiale. Verificata su Home Assistant **2026.10.4** con un inverter reale e **18 entità in sola lettura**.
+> **Perimetro.** L'integrazione usa il cloud del fornitore (`solar.siseli.com`). Non è un'integrazione BLE/Modbus locale e non sostituisce quella ufficiale. Verificata su Home Assistant **2026.11** con un inverter reale e **18 entità in sola lettura**.
 
 ## Cosa offre
 
@@ -30,7 +30,7 @@ Il polling è fisso a **60 secondi**. Il cloud aggiorna le misure circa ogni 5 m
 
 ## Requisiti
 
-- Home Assistant **2026.10 o successivo** (testato su 2026.10.4).
+- Home Assistant **2026.10 o successivo** (testato su 2026.11).
 - Un account Solar of Things con almeno un inverter visibile nell'app.
 - L'**ID numerico del dispositivo** e una **sessione esistente** (token di accesso e, consigliato, refresh token).
 - Accesso HTTPS in uscita verso `solar.siseli.com`.
@@ -39,13 +39,12 @@ Non servono pacchetti Python aggiuntivi: `aiohttp` e `cryptography` sono già in
 
 ## Installazione
 
-### HACS (consigliata)
+### HACS
 
 1. Apri **HACS → Integrazioni**.
-2. Menu a tre punti → **Repository personalizzati**.
-3. Aggiungi `https://github.com/redhunt07/ha-solar-of-things-cloud` con categoria **Integration**.
-4. Cerca **Solar of Things Cloud**, scarica e riavvia Home Assistant.
-5. Vai in **Impostazioni → Dispositivi e servizi → Aggiungi integrazione → Solar of Things Cloud**.
+2. Cerca **Solar of Things Cloud**.
+3. Scarica e riavvia Home Assistant.
+4. Vai in **Impostazioni → Dispositivi e servizi → Aggiungi integrazione → Solar of Things Cloud**.
 
 [![Apri in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=redhunt07&repository=ha-solar-of-things-cloud&category=integration)
 
@@ -55,29 +54,26 @@ Non servono pacchetti Python aggiuntivi: `aiohttp` e `cryptography` sono già in
 2. Riavvia Home Assistant.
 3. Aggiungi l'integrazione da **Impostazioni → Dispositivi e servizi**.
 
-L'integrazione non è nel catalogo HACS predefinito: va aggiunta come repository personalizzato.
-
 ## Configurazione
 
-Campi richiesti:
+Sono disponibili due metodi:
 
-| Campo | Obbligatorio | Descrizione |
+| Metodo | Cosa chiede | Rinnovo |
 | :--- | :--- | :--- |
-| **ID dispositivo** | Sì | ID numerico inverter/stazione usato dall'API del fornitore |
-| **Token di accesso** | Sì | `IOT-Token` della sessione autenticata |
-| **Refresh token** | Consigliato | Abilita il rinnovo automatico; senza, la sessione scade in poche ore e serve riauntenticare |
+| **Login account** (consigliato) | ID dispositivo, account, password | Automatico, incluso il recupero quando il refresh token scade |
+| **Sessione esistente** | ID dispositivo, token di accesso, refresh token opzionale | Automatico finché il refresh token è valido; poi riaautenticazione |
 
-Il modulo chiede solo i valori che inserisci: non legge mai le credenziali salvate da un'altra integrazione.
+La password viene trasformata in hash MD5 in locale — il digest atteso dall'endpoint del fornitore — e nella config entry si conserva solo il digest. La password in chiaro non viene mai salvata, registrata nei log né inviata.
 
-La password dell'account non viene mai richiesta né salvata.
-
-## Ottenere ID e token
-
-L'app non mostra i token nell'interfaccia. Copiali dalla tua sessione nell'app: conserva token di accesso, refresh token e scadenza nel proprio archivio locale. Sono credenziali: non incollarli nelle issue o negli screenshot.
+## Ottenere l'ID dispositivo
 
 L'ID dispositivo è l'identificativo numerico dell'inverter, non il seriale stampato sull'etichetta: è lo stesso valore che l'app usa come `deviceId`.
 
-> Il token di accesso dura circa due ore. Il refresh token dura molto di più (circa 30 giorni) e viene ruotato a ogni rinnovo. Se Home Assistant lo ruota, un secondo client che conserva il vecchio refresh token potrebbe dover riaccedere.
+Con il **login account** è l'unico dato da recuperare: la sessione viene ottenuta dall'integrazione.
+
+Con la **sessione esistente**, l'app non mostra i token nell'interfaccia. Copia il token di accesso e, se disponibile, il refresh token dalla tua sessione nell'app. Sono credenziali: non incollarli nelle issue o negli screenshot.
+
+> Il token di accesso dura poco. Il refresh token dura di più (circa 30 giorni) e viene ruotato a ogni rinnovo. Se Home Assistant lo ruota, un secondo client che conserva il vecchio refresh token potrebbe dover riaccedere.
 
 ## Rinnovo della sessione
 
@@ -87,9 +83,10 @@ L'integrazione riproduce la richiesta di rinnovo dell'app:
 2. Access token e refresh token vengono inviati a `/apis/login/refresh/access/token` con le intestazioni firmate del portale.
 3. La nuova coppia e le scadenze vengono salvate nella config entry **prima** di qualsiasi altra richiesta.
 4. Aggiornamenti concorrenti condividono un solo rinnovo; la lettura viene ritentata al massimo una volta.
-5. Se il refresh token viene rifiutato, l'entry richiede la riaautenticazione e Home Assistant mostra il modulo dedicato.
+5. Se il refresh token viene rifiutato e sono salvati account e digest della password, l'integrazione esegue un nuovo login e salva la coppia aggiornata.
+6. Se non c'è un digest salvato, o anche il login viene rifiutato, l'entry richiede la riaautenticazione e Home Assistant mostra il modulo dedicato.
 
-La firma usa l'identità pubblica del portale web, verificata sull'endpoint reale. Non servono la password dell'account né l'identità privata dell'app mobile.
+La firma usa l'identità pubblica del portale web, verificata sull'endpoint reale. Non serve l'identità privata dell'app mobile. Il login invia il digest MD5 della password, mai la password in chiaro.
 
 ## Entità
 
@@ -158,7 +155,7 @@ L'integrazione non registra mai token, URL con query string o corpi delle rispos
 
 ## Privacy e sicurezza
 
-- I token stanno nella config entry di Home Assistant. Proteggi `/config/.storage` e i backup.
+- Token e digest della password stanno nella config entry di Home Assistant. Proteggi `/config/.storage` e i backup. La password in chiaro non viene mai salvata.
 - La diagnostica è redatta: solo ID dispositivo, scadenze e misure — mai i token.
 - Le richieste vanno esclusivamente all'origine fissa del fornitore; i redirect non vengono seguiti e nessun URL esterno è accettato.
 - L'integrazione è in sola lettura: nessun endpoint di comando, modalità o firmware.

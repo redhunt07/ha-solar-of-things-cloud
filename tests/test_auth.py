@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import asyncio
+import hashlib
+import json
 import sys
 import unittest
 from datetime import UTC, datetime
@@ -16,7 +18,7 @@ from solar_of_things_cloud.api import (
     AuthenticationError,
     SolarApi,
 )
-from solar_of_things_cloud.auth import CloudAuth
+from solar_of_things_cloud.auth import CloudAuth, hash_password
 
 
 class FakeResponse:
@@ -62,6 +64,21 @@ def renewed():
     )
 
 
+def login_response():
+    return FakeResponse(
+        {
+            "code": 0,
+            "data": {
+                "accessToken": "login-access",
+                "refreshToken": "login-refresh",
+                "accessTokenWillExpiredAt": "2099-01-01T00:00:00Z",
+                "refreshTokenWillExpiredAt": "2099-02-01T00:00:00Z",
+                "account": "RedHunt07",
+            },
+        }
+    )
+
+
 def telemetry():
     return FakeResponse(
         {
@@ -75,16 +92,19 @@ def telemetry():
 
 
 class AuthTests(unittest.IsolatedAsyncioTestCase):
-    def make_auth(self, session, **extra):
+    def save_callback(self):
         self.saved = []
 
         async def save(data):
             self.saved.append(data)
 
+        return save
+
+    def make_auth(self, session, **extra):
         return CloudAuth(
             session,
             {"token": "old-access", "refresh_token": "refresh", **extra},
-            save,
+            self.save_callback(),
         )
 
     async def test_rotation_is_persisted(self) -> None:
@@ -160,6 +180,66 @@ class AuthTests(unittest.IsolatedAsyncioTestCase):
         auth = self.make_auth(FakeSession([FakeResponse({}, status=401)]))
         with self.assertRaises(AuthenticationError):
             await auth.async_get_token(rejected="old-access")
+
+    async def test_hash_password_matches_vendor_digest(self) -> None:
+        self.assertEqual(hash_password("secret"), hashlib.md5(b"secret").hexdigest())
+
+    async def test_login_when_no_token_is_stored(self) -> None:
+        session = FakeSession([login_response()])
+        auth = CloudAuth(
+            session,
+            {"account": "RedHunt07", "password_hash": hash_password("secret")},
+            self.save_callback(),
+        )
+        self.assertEqual(await auth.async_get_token(), "login-access")
+        self.assertEqual(auth.data["account"], "RedHunt07")
+        self.assertEqual(auth.data["password_hash"], hash_password("secret"))
+
+    async def test_login_body_contains_password_digest(self) -> None:
+        session = FakeSession([login_response()])
+        auth = CloudAuth(
+            session,
+            {"account": "RedHunt07", "password_hash": hash_password("secret")},
+            self.save_callback(),
+        )
+        await auth.async_get_token()
+        body = json.loads(session.calls[0]["data"])
+        self.assertEqual(body["account"], "RedHunt07")
+        self.assertEqual(body["password"], hash_password("secret"))
+
+    async def test_login_recovers_revoked_refresh_token(self) -> None:
+        session = FakeSession([FakeResponse({}, status=401), login_response()])
+        auth = self.make_auth(
+            session,
+            account="RedHunt07",
+            password_hash=hash_password("secret"),
+        )
+        self.assertEqual(
+            await auth.async_get_token(rejected="old-access"), "login-access"
+        )
+        self.assertEqual(len(session.calls), 2)
+        self.assertEqual(self.saved[0]["token"], "login-access")
+
+    async def test_login_rejected_requires_reauth(self) -> None:
+        session = FakeSession([FakeResponse({}, status=401), FakeResponse({"code": 7})])
+        auth = self.make_auth(
+            session,
+            account="RedHunt07",
+            password_hash=hash_password("secret"),
+        )
+        with self.assertRaises(AuthenticationError):
+            await auth.async_get_token(rejected="old-access")
+
+    async def test_login_invalid_schema_is_not_saved(self) -> None:
+        session = FakeSession([FakeResponse({"code": 0, "data": {}})])
+        auth = CloudAuth(
+            session,
+            {"account": "RedHunt07", "password_hash": hash_password("secret")},
+            self.save_callback(),
+        )
+        with self.assertRaises(ApiError):
+            await auth.async_get_token()
+        self.assertFalse(self.saved)
 
 
 if __name__ == "__main__":

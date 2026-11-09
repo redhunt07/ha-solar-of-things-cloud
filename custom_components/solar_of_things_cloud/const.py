@@ -15,6 +15,7 @@ DOMAIN = "solar_of_things_cloud"
 BASE_URL = "https://solar.siseli.com/apis"
 TELEMETRY_PATH = "/deviceState/simple/state/latest/v1"
 REFRESH_PATH = "/login/refresh/access/token"
+LOGIN_PATH = "/login/account"
 
 # Public web-portal application identity used to sign session renewal requests.
 APP_ID = "rBrTRfAPXz"
